@@ -26,3 +26,6 @@ Route::post('/products/remove-image', 'ProductController@removeImage');
 
 Route::get('/products/create-step3', 'ProductController@createStep3');
 Route::post('/products/store', 'ProductController@store');
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
