@@ -15,17 +15,31 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/products', 'ProductController@index');
-
-Route::get('/products/create-step1', 'ProductController@createStep1');
-Route::post('/products/create-step1', 'ProductController@postCreateStep1');
-
-Route::get('/products/create-step2', 'ProductController@createStep2');
-Route::post('/products/create-step2', 'ProductController@postCreateStep2');
-Route::post('/products/remove-image', 'ProductController@removeImage');
-
-Route::get('/products/create-step3', 'ProductController@createStep3');
-Route::post('/products/store', 'ProductController@store');
 Auth::routes();
-
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::group(['middleware' => ['auth']], function() {
+    // Administrator Routes
+    Route::group(['prefix' => 'admin', 'middleware' => 'App\Http\Middleware\AdministratorMiddleware'], function () {
+        Route::get('/', function () {
+            return view('administrators.index');
+        });
+        Route::get('/kkk', function () {
+            return view('administrators.index');
+        });
+    });
+
+    // Manager Routes
+    Route::group(['prefix' => 'manager', 'middleware' => 'App\Http\Middleware\ManagerMiddleware'], function () {
+        Route::get('/', function () {
+            return view('managers.index');
+        });
+    });
+
+    // Member Routes
+    Route::group(['prefix' => 'member', 'middleware' => 'App\Http\Middleware\MemberMiddleware'], function () {
+        Route::get('/', function () {
+            return view('members.index');
+        });
+    });
+});
